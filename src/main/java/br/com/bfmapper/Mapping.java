@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -136,8 +137,9 @@ public class Mapping implements Serializable {
 	    return col;
     }
 	
-    public <T> Collection<T> toCollection(Class<T> target) {
-	    return toCollection( target, ArrayList.class );
+    @SuppressWarnings({"unchecked"})
+	public <T> List<T> toCollection(Class<T> target) {
+	    return (List<T>) toCollection( target, ArrayList.class );
 	}
 	
 	private <E> E  instanceFactory(Class<E> target) {
