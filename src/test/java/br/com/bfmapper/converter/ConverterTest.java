@@ -42,6 +42,8 @@ import br.com.bfmapper.model.Pneu;
 import br.com.bfmapper.model.PneuCanonico;
 import br.com.bfmapper.model.Produto;
 import br.com.bfmapper.model.ProdutoCanonico;
+import br.com.bfmapper.model.Roda;
+import br.com.bfmapper.model.RodaCanonico;
 import br.com.bfmapper.model.TipoAluno;
 import br.com.bfmapper.model.canonic.ContratoCanonico;
 import br.com.bfmapper.model.vo.Contrato;
@@ -318,5 +320,14 @@ public class ConverterTest extends BaseTest {
     	for (br.com.bfmapper.model.canonic.ContratoCanonico.Dependente dependente : contratoCanonico.getDependentes()) {
     		assertNotNull(dependente);
 		}
+    }
+    
+    @Test
+    public void shouldSetFieldsWithoutSetter() {
+    	Roda roda = new Roda("michelin", 17);
+    	RodaCanonico rodaCanonico = new Mapping().apply(roda).to(RodaCanonico.class);
+    	
+    	assertEquals(roda.getMarca(), rodaCanonico.getMarca());
+    	assertEquals(roda.getAro(), rodaCanonico.getAro());
     }
 }

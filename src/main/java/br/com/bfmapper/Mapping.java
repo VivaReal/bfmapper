@@ -313,10 +313,10 @@ public class Mapping implements Serializable {
 
 				/* the value of the targetProperty won't be replaced by the value of the sourceProperty in case it's null */
 				if (value != null) {
-					if (targetPropertyDescriptor.getWriteMethod() != null) {
-						targetPropertyDescriptor.getWriteMethod().invoke(target, value);
-					} else if (ReflectionUtils.isAssignable(targetPropertyClass, Collection.class)) {
-					    setCollectionValueFromReadMethod(targetPropertyDescriptor, target, value);
+					if(targetPropertyClass.isAssignableFrom(Collection.class)) {
+						setCollectionValueFromReadMethod(targetPropertyDescriptor, target, value);
+					} else {
+						ReflectionUtils.invokeRecursiveSetter(target, targetPropertyDescriptor.getName(), value);
 					}
 				}
 			}
