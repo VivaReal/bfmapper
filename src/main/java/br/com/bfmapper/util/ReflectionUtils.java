@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import net.vidageek.mirror.dsl.Mirror;
+
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtilsBean;
 import org.apache.commons.lang.ClassUtils;
@@ -134,13 +136,13 @@ public class ReflectionUtils {
     }
     
     public static <T> void invokeSetter(Object bean, String attribute, Object value, boolean fail){
-        try {
-            getPropertyUtilsBean().setProperty(bean, attribute, value);
+    	try {
+            new Mirror().on(bean).set().field(attribute).withValue(value);
         } catch (Exception ex){
             if(fail) {
-                throw new IllegalArgumentException("Method for set attribute " + attribute, ex);
+            	throw new IllegalArgumentException("Method for set attribute " + attribute, ex);
             }
-        }   
+        }
     }
     
     public static <T> void invokeSetter(Object bean, String attribute, Object value){
