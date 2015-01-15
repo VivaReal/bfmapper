@@ -181,23 +181,16 @@ public class Mapping implements Serializable {
 
 			try {
 				if (value != null) {
-					PropertyDescriptor targetPropertyDescriptor = BeanUtils.getPropertyDescriptor(target.getClass(), targetProperty);
-					
-					if (targetPropertyDescriptor == null || targetPropertyDescriptor.getWriteMethod() != null) {
-						try {
-						    ReflectionUtils.invokeRecursiveSetter(target, targetProperty, value);    
-                        } catch (Exception e) {
-                            //hack to set collections without set method in chained properties
-                            if (ReflectionUtils.isAssignable(value.getClass(), Collection.class) && targetProperty.contains(".")) {
-                                Object chainedObjectTarget = ReflectionUtils.prepareInvokeRecursiveSetter(target, targetProperty, value);
-                                String lastProperty = targetProperty.substring(targetProperty.lastIndexOf(".") + 1);
-                                setCollectionValueFromReadMethod(BeanUtils.getPropertyDescriptor(chainedObjectTarget.getClass(), lastProperty), chainedObjectTarget, value);      
-                            }
+					try {
+					    ReflectionUtils.invokeRecursiveSetter(target, targetProperty, value);    
+                    } catch (Exception e) {
+                        //hack to set collections without set method in chained properties
+                        if (ReflectionUtils.isAssignable(value.getClass(), Collection.class) && targetProperty.contains(".")) {
+                            Object chainedObjectTarget = ReflectionUtils.prepareInvokeRecursiveSetter(target, targetProperty, value);
+                            String lastProperty = targetProperty.substring(targetProperty.lastIndexOf(".") + 1);
+                            setCollectionValueFromReadMethod(BeanUtils.getPropertyDescriptor(chainedObjectTarget.getClass(), lastProperty), chainedObjectTarget, value);      
                         }
-					} else if (ReflectionUtils.isAssignable(value.getClass(), Collection.class)) {
-						setCollectionValueFromReadMethod(targetPropertyDescriptor, target, value);
-						
-					}
+                    }
 				}
 			} catch (Exception e) {
 				throw new IllegalArgumentException(e);
