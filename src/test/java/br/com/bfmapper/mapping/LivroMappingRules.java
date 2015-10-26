@@ -1,12 +1,13 @@
 package br.com.bfmapper.mapping;
 
+import org.apache.commons.lang.ClassUtils;
+
 import br.com.bfmapper.Converter;
 import br.com.bfmapper.MappingRules;
 import br.com.bfmapper.RulesMapper;
 import br.com.bfmapper.model.Livro;
 import br.com.bfmapper.model.LivroCanonico;
 import br.com.bfmapper.transformer.SimpleTransformer;
-import br.com.bfmapper.util.ReflectionUtils;
 
 public class LivroMappingRules implements RulesMapper {
 
@@ -23,7 +24,7 @@ public class LivroMappingRules implements RulesMapper {
 		public <T> T transform(Object value, Class<T> type) {
 			Object returnValue = null;
 			
-			if (ReflectionUtils.isAssignable(type, String.class)) {
+			if (ClassUtils.isAssignable(type, String.class)) {
 				returnValue = ((String) value).toUpperCase();
 			} 
 			

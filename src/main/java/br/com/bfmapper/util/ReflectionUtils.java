@@ -285,7 +285,7 @@ public class ReflectionUtils {
     public static boolean isSimpleType(Class<?> clazz) {
         return primitiveToWrapperMap.containsKey(clazz) || primitiveToWrapperMap.containsValue(clazz) || 
                clazz.equals(String.class) || clazz.equals(Date.class) || clazz.equals(Calendar.class) || 
-               clazz.isEnum() || ReflectionUtils.isAssignable(clazz, Number.class);  
+               clazz.isEnum() || ClassUtils.isAssignable(clazz, Number.class);  
     }
     
     public static boolean isPrimitiveWrapperAssignable(Class<?> source, Class<?> target) {
@@ -309,20 +309,6 @@ public class ReflectionUtils {
     
     public static boolean isInnerClass(Class<?> clazz) {
     	return clazz.getEnclosingClass() != null && !Modifier.isStatic(clazz.getModifiers());
-    }
-    
-    public static boolean isAssignable(Class<?> clazz1, Class<?> clazz2) {
-    	try {
-			ClassLoader clazz1ClassLoader = clazz1.getClassLoader();
-			if(clazz1ClassLoader != null) {
-				Class<?> classToCompare = clazz1ClassLoader.loadClass(clazz2.getName());
-				return ClassUtils.isAssignable(clazz1, classToCompare);
-			} else {
-				return ClassUtils.isAssignable(clazz1, clazz2);
-			}
-		} catch (ClassNotFoundException e) {
-			return ClassUtils.isAssignable(clazz1, clazz2);
-		}
     }
 
 }

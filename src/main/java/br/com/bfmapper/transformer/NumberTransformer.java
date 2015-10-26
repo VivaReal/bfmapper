@@ -7,8 +7,6 @@ import java.util.List;
 import org.apache.commons.lang.ClassUtils;
 import org.springframework.util.NumberUtils;
 
-import br.com.bfmapper.util.ReflectionUtils;
-
 public class NumberTransformer implements SimpleTransformer {
 
 	private static Class<?>[] decimalClasses = {Double.class, Float.class, BigDecimal.class};
@@ -27,7 +25,7 @@ public class NumberTransformer implements SimpleTransformer {
 			throw new IllegalArgumentException("Incorrect type for transformer class");
 		}
 		
-		if (ReflectionUtils.isAssignable(type, Number.class) && value instanceof Number) {
+		if (ClassUtils.isAssignable(type, Number.class) && value instanceof Number) {
 			if (value.getClass().equals(type) || value.getClass().isAssignableFrom(type)) {
 				returnValue = value;
 			} else {
@@ -45,9 +43,9 @@ public class NumberTransformer implements SimpleTransformer {
 					returnValue = NumberUtils.convertNumberToTargetClass(Number.class.cast(value), type.asSubclass(Number.class));	
 				}
 			}
-		} else if (ReflectionUtils.isAssignable(type, Number.class) && value instanceof String) {
+		} else if (ClassUtils.isAssignable(type, Number.class) && value instanceof String) {
 			returnValue = NumberUtils.parseNumber((String) value, type.asSubclass(Number.class));
-		} else if (ReflectionUtils.isAssignable(type, String.class) && value instanceof Number) {
+		} else if (ClassUtils.isAssignable(type, String.class) && value instanceof Number) {
 			returnValue = value.toString();
 		} else {
 			throw new IllegalArgumentException("Incorrect type for transformer class");
